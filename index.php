@@ -29,14 +29,14 @@
       $db = new PDO('sqlite:messaging.pReProx.db');
       if (!$db) die( "error opening database" );
       
-      $stmt = $db->query( $db, "SELECT * FROM ports WHERE expires <= NOW() LIMIT 1" );
+      $stmt = $db->query( "SELECT * FROM ports WHERE expires <= NOW() LIMIT 1" );
       $port = $stmt->fetch(PDO::FETCH_OBJ);
 
       if ( $port == null )
         die( "Sorry, no free ports. Please try again later." );
  
       exec( "./newredir.sh " . $port->port . " " . $_POST['IP'] . " " . $_POST['port'] . "1800 &" );
-      $db->exec( $res, "UPDATE ports SET expires=DATE_ADD(NOW(), INTERVAL 30 MINUTE) WHERE port = " . $port->port );
+      $db->exec( "UPDATE ports SET expires=DATE_ADD(NOW(), INTERVAL 30 MINUTE) WHERE port = " . $port->port );
  
       echo( "Hooray, you are now reachable at " . $_SERVER['HTTP_HOST'] . ":" . $port->port . "!" );
     } else { ?>
