@@ -1,0 +1,17 @@
+body {
+	margin-left: 150px;
+	background: #122;
+	color: #aab;
+}
+
+a {
+	color: #fff;
+	text-decoration: none;
+}
+
+footer {
+	position: absolute;
+	bottom: 5px;
+	right: 150px;
+	text-align: right;
+}
