@@ -37,10 +37,10 @@
       if ( $port == null )
         die( "Sorry, no free ports. Please try again later." );
  
-      exec( "./newredir.sh " . $port->port . " " . $_POST['IP'] . " " . $_POST['port'] . "1800 &" );
+      exec( "./newredir.sh " . $port->port . " " . $_POST['IP'] . " " . $_POST['port'] . " 1800 &" );
       $db->exec( "UPDATE ports SET t_port = " . $_POST['port'] . ", t_ip = '" . $_POST['IP'] . "', expires=DATETIME(CURRENT_TIMESTAMP, '30 minutes') WHERE port = " . $port->port );
  
-      echo( "Hooray, you are now reachable at " . $_SERVER['HTTP_HOST'] . ":" . $port->port . "!" );
+      echo( "Yay, you are now reachable at " . $_SERVER['HTTP_HOST'] . ":" . $port->port . "!" );
     } else { ?>
     <form action="#" method="post">
       The IP to bind: <input type="text" name="IP" /><br/>
