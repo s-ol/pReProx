@@ -14,14 +14,17 @@
   </header>
   <?php
     if( isset( $_POST[ 'bind' ] ) && isset( $_POST[ 'IP' ] ) && isset( $_POST[ 'port' ] ) ) {
-      if( ! preg_match( '/[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/', $_POST['IP'] ) )
+      if ( ! preg_match( '/^(([01]?\d\d?|2[0-4]\d|25[0-5])\.){3}([01]?\d\d?|2[0-4]\d|25[0-5])$/', $_POST['IP'] ) )
         die( "Invalid IP" );
+
+      if ( preg_match( '/192\.168[.]*/', $_POST['IP'] ) || preg_match( '/172\.[.]*/', $_POST['IP'] ) || preg_match( '/10\.[.]*/', $_POST['IP'] ) )
+        die( "Private IP blocks are blocked" );
  
-      if( ! preg_match( '/[0-9]*/', $_POST['port'] ) )
+      if ( ! preg_match( '/[0-9]{1,5}/', $_POST['port'] ) )
         die( "Invalid port" );
  
-      if( $_POST['IP'] == "MY OWN IP" )
-        die( "Not forwarding to myself" ); //dont know why, but I guess this could end "bad"
+      if ( $_POST['IP'] == "MY OWN IP" || $_POST['IP'] == "127.0.0.1" )
+        die( "Not forwarding to myself" );
  
       $db = sqlite_open( "pReProx.db" );
       if (!$db) die( "error opening database" );
@@ -31,19 +34,22 @@
       if ( sqlite_num_rows( $res ) < 1 )
         die( "Sorry, no free ports. Please try again later." );
         
-      $port = mysql_fetch_array( $res, SQLITE_ASSOC );
+      $port = sqlite_fetch_array( $res, SQLITE_ASSOC );
  
       exec( "./newredir.sh " . $port['port'] . " " . $_POST['IP'] . " " . $_POST['port'] . "1800 &" );
-      mysql_query( "UPDATE ports SET expires=DATE_ADD(NOW(), INTERVAL 30 MINUTE) WHERE port = " . $port->port );
+      sqlite_exec( $res, "UPDATE ports SET expires=DATE_ADD(NOW(), INTERVAL 30 MINUTE) WHERE port = " . $port->port );
  
       echo( "Hooray, you are now reachable at " . $_SERVER['HTTP_HOST'] . ":" . $port['port'] . "!" );
     } else { ?>
     <form action="#" method="post">
       The IP to bind: <input type="text" name="IP" /><br/>
       The port to bind: <input type="text" name="port" /><br/>
-      <input type="submit" value="bind" name="Bind!" />
+      <input type="submit" name="bind" value="Bind!" />
     </form>
     <?php } ?>
-    <footer>pReProx by <a href="http://lethemfind.us/community/user/4085-1nsignia/">S0lll0s aka 1nsignia</a></footer>
+    <footer>
+      pReProx by <a href="http://lethemfind.us/community/user/4085-1nsignia/">S0lll0s aka 1nsignia</a><br/>
+      Visit our friendly community at <a href="http://lethemfind.us">lethemfind.us</a>
+    </footer>
 </body>
 </html>
