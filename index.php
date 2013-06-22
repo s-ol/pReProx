@@ -26,20 +26,19 @@
       if ( $_POST['IP'] == "MY OWN IP" || $_POST['IP'] == "127.0.0.1" )
         die( "Not forwarding to myself" );
  
-      $db = sqlite_open( "pReProx.db" );
+      $db = new PDO('sqlite:messaging.pReProx.db');
       if (!$db) die( "error opening database" );
       
-      $res = sqlite_query( $db, "SELECT * FROM ports WHERE expires <= NOW() LIMIT 1" );
-      
-      if ( sqlite_num_rows( $res ) < 1 )
+      $stmt = $db->query( $db, "SELECT * FROM ports WHERE expires <= NOW() LIMIT 1" );
+      $port = $stmt->fetch(PDO::FETCH_OBJ);
+
+      if ( $port == null )
         die( "Sorry, no free ports. Please try again later." );
-        
-      $port = sqlite_fetch_array( $res, SQLITE_ASSOC );
  
-      exec( "./newredir.sh " . $port['port'] . " " . $_POST['IP'] . " " . $_POST['port'] . "1800 &" );
-      sqlite_exec( $res, "UPDATE ports SET expires=DATE_ADD(NOW(), INTERVAL 30 MINUTE) WHERE port = " . $port->port );
+      exec( "./newredir.sh " . $port->port . " " . $_POST['IP'] . " " . $_POST['port'] . "1800 &" );
+      $db->exec( $res, "UPDATE ports SET expires=DATE_ADD(NOW(), INTERVAL 30 MINUTE) WHERE port = " . $port->port );
  
-      echo( "Hooray, you are now reachable at " . $_SERVER['HTTP_HOST'] . ":" . $port['port'] . "!" );
+      echo( "Hooray, you are now reachable at " . $_SERVER['HTTP_HOST'] . ":" . $port->port . "!" );
     } else { ?>
     <form action="#" method="post">
       The IP to bind: <input type="text" name="IP" /><br/>
