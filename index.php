@@ -1,8 +1,3 @@
-<?php
-  define( "__PAGE__", 1 );
-  require_once( "config.php" );
-?>
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -28,19 +23,20 @@
       if( $_POST['IP'] == "MY OWN IP" )
         die( "Not forwarding to myself" ); //dont know why, but I guess this could end "bad"
  
-      mysql_connect( MYSQL_HOST, MYSQL_USER, MYSQL_PASS );
-      mysql_select_db( MYSQL_DB );
+      $db = sqlite_open( "pReProx.db" );
+      if (!$db) die( "error opening database" );
       
-      $res = mysql_query( "SELECT * FROM ports WHERE expires <= NOW() LIMIT 1" );
-      $port = mysql_fetch_object( $res );
- 
-      if ( $port == null )
+      $res = sqlite_query( $db, "SELECT * FROM ports WHERE expires <= NOW() LIMIT 1" );
+      
+      if ( sqlite_num_rows( $res ) < 1 )
         die( "Sorry, no free ports. Please try again later." );
+        
+      $port = mysql_fetch_array( $res, SQLITE_ASSOC );
  
-      exec( "./newredir.sh " . $port->port . " " . $_POST['IP'] . " " . $_POST['port'] . "1800 &" );
+      exec( "./newredir.sh " . $port['port'] . " " . $_POST['IP'] . " " . $_POST['port'] . "1800 &" );
       mysql_query( "UPDATE ports SET expires=DATE_ADD(NOW(), INTERVAL 30 MINUTE) WHERE port = " . $port->port );
  
-      echo( "Hooray, you are now reachable at " . $_SERVER['HTTP_HOST'] . ":" . $port->port . "!" );
+      echo( "Hooray, you are now reachable at " . $_SERVER['HTTP_HOST'] . ":" . $port['port'] . "!" );
     } else { ?>
     <form action="#" method="post">
       The IP to bind: <input type="text" name="IP" /><br/>
