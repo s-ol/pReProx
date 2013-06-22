@@ -1,13 +1,5 @@
-AuthUserFile /absolute/path/to/.htpasswd
-AuthType Basic
-AuthName "Admin Panel"
-
 Order Allow,Deny
 Allow from all
-
-<Files admin.php>
-	Require valid-user
-</Files>
 
 <Files ~ "\.(sh|db|ht.*)">
   Deny from all

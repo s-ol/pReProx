@@ -1,6 +1,17 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <?php
+    session_start();
+    $loggedin = false;
+
+    if ( isset( $_POST['login'] ) && $_POST['username'] == "admin" && $_POST['password'] == "test" ) {
+      $_SESSION['token'] = sha1( "admin" . "megasecr3t" );
+      $loggedin = true;
+    } elseif ( isset( $_SESSION['token'] ) && $_SESSION['token'] == sha1( "admin" . "megasecr3t" ) ) {
+      $loggedin = true;
+    }
+  ?>
   <title>pReProx</title>
   <link rel="stylesheet" type="text/css" href="style.css" />
 </head>
@@ -13,34 +24,43 @@
     </p>
   </header>
   <?php
-    $db = new PDO('sqlite:pReProx.db');
-    if ( !$db || $db == null ) die( "error opening database" );
+    if ( $loggedin ) {
+      $db = new PDO('sqlite:pReProx.db');
+      if ( !$db || $db == null ) die( "error opening database" );
 
 
-    if ( isset( $_GET[ 'delete' ] ) ) {
-      $db->exec( "DELETE FROM ports WHERE port = " . $_GET[ 'delete' ] );
-    }
-    if ( isset( $_POST[ 'add' ] ) && isset( $_POST[ 'port' ] ) ) {
-      $db->exec( "INSERT INTO ports ( port ) VALUES( " . $_POST[ 'port' ] . " )" );
-    }
+      if ( isset( $_GET[ 'delete' ] ) ) {
+        $db->exec( "DELETE FROM ports WHERE port = " . $_GET[ 'delete' ] );
+      }
+      if ( isset( $_POST[ 'add' ] ) && isset( $_POST[ 'port' ] ) ) {
+        $db->exec( "INSERT INTO ports ( port ) VALUES( " . $_POST[ 'port' ] . " )" );
+      }
 
 
-    $stmt = $db->query( "SELECT CASE WHEN expires <= CURRENT_TIMESTAMP = 0 THEN 'yes' ELSE 'no' END AS running, port, t_ip || ':' || t_port AS target FROM ports" );
+      $stmt = $db->query( "SELECT CASE WHEN expires <= CURRENT_TIMESTAMP = 0 THEN 'yes' ELSE 'no' END AS running, port, t_ip || ':' || t_port AS target FROM ports" );
 
-    if ( $stmt == null )
-      die( "Error fetching ports." );
-    ?>
-    <table>
-    <tr><th>port</th><th>runs?</th><th>actions</th><th>target</th></tr>
-    <?php
-    while( ( $port = $stmt->fetch(PDO::FETCH_OBJ) ) != null ) { ?>
-      <tr><td><?php echo $port->port ?></td><td><?php echo $port->running ?></td><td><a href="?delete=<?php echo $port->port ?>">delete</a></td><td><?php echo $port->target ?></td></tr>
+      if ( $stmt == null )
+        die( "Error fetching ports." );
+      ?>
+      <table>
+      <tr><th>port</th><th>runs?</th><th>actions</th><th>target</th></tr>
+      <?php
+      while( ( $port = $stmt->fetch(PDO::FETCH_OBJ) ) != null ) { ?>
+        <tr><td><?php echo $port->port ?></td><td><?php echo $port->running ?></td><td><a href="?delete=<?php echo $port->port ?>">delete</a></td><td><?php echo $port->target ?></td></tr>
+      <?php } ?>
+      </table><br/>
+      <form action="#" method="post">
+        <input type="text" name="port" /> <input type="submit" name="add" value="add port" />
+      </form>
+    <?php  } else { ?>
+      <form action="#" method="post">
+        <input type="text" name="username" /><br/>
+        <input type="password" name="password" /><br/>
+        <input type="submit" name="login" value="log in" />
+      </form>
     <?php } ?>
-    </table><br/>
-    <form action="#" method="post">
-      <input type="text" name="port" /> <input type="submit" name="add" value="add port" />
-    </form>
     <footer>
+      <span id="left"><a href="index.php">back to index</a></span>
       pReProx by <a href="http://lethemfind.us/community/user/4085-1nsignia/">S0lll0s aka 1nsignia</a><br/>
       Visit our friendly community at <a href="http://lethemfind.us">lethemfind.us</a>
     </footer>
