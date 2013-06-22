@@ -49,6 +49,7 @@
     </form>
     <?php } ?>
     <footer>
+      <span id="left"><a href="admin.php">admin panel</a></span>
       pReProx by <a href="http://lethemfind.us/community/user/4085-1nsignia/">S0lll0s aka 1nsignia</a><br/>
       Visit our friendly community at <a href="http://lethemfind.us">lethemfind.us</a>
     </footer>

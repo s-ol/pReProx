@@ -20,5 +20,10 @@ footer {
 	position: absolute;
 	bottom: 5px;
 	right: 200px;
+	left: 200px;
 	text-align: right;
+}
+
+#left {
+	float: left;
 }
