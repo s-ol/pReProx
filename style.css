@@ -1,7 +1,14 @@
 body {
-	margin-left: 150px;
+	margin-left: 200px;
 	background: #122;
 	color: #aab;
+
+	font-family: Arial;
+}
+
+form {
+	width: 400px;
+	text-align: right;
 }
 
 a {
@@ -12,6 +19,6 @@ a {
 footer {
 	position: absolute;
 	bottom: 5px;
-	right: 150px;
+	right: 200px;
 	text-align: right;
 }
