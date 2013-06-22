@@ -1,9 +1,7 @@
-Order Deny,Allow
+Order Allow,Deny
 
-<Files index.php>
-  Allow from all
-</Files>
+Allow from all
 
-<Files style.css>
-  Allow from all
+<Files ~ "\.(sh|db)">
+  Deny from all
 </Files>
