@@ -1,17 +1,22 @@
+<?php
+  define( "USERNAME", "admin" );
+  define( "PASSWORD", "test" );
+  define( "SECRET", "megasecr3t" );
+
+  session_start();
+  $loggedin = false;
+
+  if ( isset( $_POST['login'] ) && $_POST['username'] == USERNAME && $_POST['password'] == PASSWORD ) {
+    $_SESSION['token'] = sha1( USERNAME . "megasecr3t" );
+    $loggedin = true;
+  } elseif ( isset( $_SESSION['token'] ) && $_SESSION['token'] == sha1( USERNAME . SECRET ) ) {
+    $loggedin = true;
+  }
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
-  <?php
-    session_start();
-    $loggedin = false;
-
-    if ( isset( $_POST['login'] ) && $_POST['username'] == "admin" && $_POST['password'] == "test" ) {
-      $_SESSION['token'] = sha1( "admin" . "megasecr3t" );
-      $loggedin = true;
-    } elseif ( isset( $_SESSION['token'] ) && $_SESSION['token'] == sha1( "admin" . "megasecr3t" ) ) {
-      $loggedin = true;
-    }
-  ?>
   <title>pReProx</title>
   <link rel="stylesheet" type="text/css" href="style.css" />
 </head>
