@@ -1,0 +1,9 @@
+Order Deny,Allow
+
+<Files index.php>
+  Allow from all
+</Files>
+
+<Files style.css>
+  Allow from all
+</Files>
