@@ -13,7 +13,7 @@
     </p>
   </header>
   <?php
-    if( isset( $_POST[ 'bind' ] && isset( $_POST[ 'IP' ] ) && isset( $_POST[ 'port' ] ) ) {
+    if( isset( $_POST[ 'bind' ] ) && isset( $_POST[ 'IP' ] ) && isset( $_POST[ 'port' ] ) ) {
       if( ! preg_match( '/[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/', $_POST['IP'] ) )
         die( "Invalid IP" );
  
