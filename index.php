@@ -1,3 +1,4 @@
+<?php require_once( 'config.php' ); ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -23,7 +24,7 @@
       if ( ! preg_match( '/[0-9]{1,5}/', $_POST['port'] ) )
         die( "Invalid port" );
  
-      if ( $_POST['IP'] == "MY OWN IP" || $_POST['IP'] == "127.0.0.1" )
+      if ( $_POST['IP'] == OWN_IP || $_POST['IP'] == "127.0.0.1" )
         die( "Not forwarding to myself" );
  
       $db = new PDO('sqlite:pReProx.db');
@@ -37,10 +38,10 @@
       if ( $port == null )
         die( "Sorry, no free ports. Please try again later." );
  
-      system( "./newredir " . $port->port . " " . $_POST['IP'] . " " . $_POST['port'] . " 1800 &" );
-      $db->exec( "UPDATE ports SET t_port = " . $_POST['port'] . ", t_ip = '" . $_POST['IP'] . "', expires=DATETIME(CURRENT_TIMESTAMP, '30 minutes') WHERE port = " . $port->port );
+      system( "./newredir " . $port->port . " " . $_POST['IP'] . " " . $_POST['port'] . " " . EXPIRE_TIME . " &" );
+      $db->exec( "UPDATE ports SET t_port = " . $_POST['port'] . ", t_ip = '" . $_POST['IP'] . "', expires=DATETIME(CURRENT_TIMESTAMP, '" . EXPIRE_TIME . " seconds') WHERE port = " . $port->port );
  
-      echo( "Yay, you are now reachable at " . $_SERVER['HTTP_HOST'] . ":" . $port->port . "!" );
+      echo( "Yay, you are now reachable at " . HOST . ":" . $port->port . "!" );
     } else { ?>
     <form action="#" method="post">
       The IP to bind: <input type="text" name="IP" /><br/>

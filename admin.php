@@ -1,8 +1,5 @@
 <?php
-  define( "USERNAME", "admin" );
-  define( "PASSWORD", "test" );
-  define( "SECRET", "megasecr3t" );
-
+  require_once('config.php');
   session_start();
   $loggedin = false;
 
