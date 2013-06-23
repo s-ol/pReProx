@@ -1,5 +1,6 @@
 body {
 	margin-left: 200px;
+	margin-bottom: 75px;
 	background: #122;
 	color: #aab;
 
@@ -17,10 +18,13 @@ a {
 }
 
 footer {
-	position: absolute;
-	bottom: 5px;
-	right: 200px;
-	left: 200px;
+	position: fixed;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	margin: 10px 200px;
+	background: #122;
+	border-top: 2px solid #233;
 	text-align: right;
 }
 
