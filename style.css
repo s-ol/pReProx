@@ -31,3 +31,22 @@ footer {
 #left {
 	float: left;
 }
+
+input {
+	background: #122;
+	border: 2px solid #233;
+	color: #aab;
+}
+
+input[type="submit"] {
+	width: 65px;
+}
+
+input[type="submit"]:active {
+	border: 2px solid #122;
+	background: #122!important;
+}
+
+input[type="submit"]:hover {
+	background: #233;
+}
