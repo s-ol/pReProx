@@ -3,24 +3,22 @@
 #include <unistd.h>
 
 int main( int argc, char *argv[] ) {
- char call[200];
- pid_t pid = fork();
+  char call[200];
+  pid_t pid = fork();
 
- if ( argc != 5 ) {
-                puts( "wrong number of parameters" );
-                return 1;
-        }
+  if ( argc != 5 ) {
+    puts( "wrong number of parameters\n" );
+    return 1;
+  }
 
- if ( !pid ) {
-  sprintf( call, "./redirect.sh %s %s %s", argv[1], argv[2], argv[3] );
+  if ( !pid ) {
+    execl( "./redirect.sh", "redirect.sh", argv[1], argv[2], argv[3], NULL );
+    return 0;
+  }
+
+  int time = atoi( argv[4] );
+  sleep( time );
+  sprintf( call, "kill %d", pid );
   system( call );
-  return 0;
- }
-
- int time = atoi( argv[4] );
- sleep( time );
- sprintf( call, "kill %d", pid );
- kill( pid );
- system( call );
- printf( "killed %d\n", pid );
+  printf( "killed %d\n", pid );
 }
