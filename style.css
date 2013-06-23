@@ -50,3 +50,8 @@ input[type="submit"]:active {
 input[type="submit"]:hover {
 	background: #233;
 }
+
+article img {
+	width: 600px;
+	border: 4px solid #233;
+}
