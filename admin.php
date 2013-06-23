@@ -33,12 +33,17 @@
       $db = new PDO('sqlite:pReProx.db');
       if ( !$db || $db == null ) die( "error opening database" );
 
-
       if ( isset( $_GET[ 'delete' ] ) ) {
         $db->exec( "DELETE FROM ports WHERE port = " . $_GET[ 'delete' ] );
       }
       if ( isset( $_POST[ 'add' ] ) && isset( $_POST[ 'port' ] ) ) {
         $db->exec( "INSERT INTO ports ( port ) VALUES( " . $_POST[ 'port' ] . " )" );
+      }
+      if ( isset( $_POST[ 'range' ] ) && isset( $_POST[ 'start' ] ) && isset( $_POST[ 'end' ] ) ) {
+        $query = "INSERT INTO ports (port) SELECT " . $_POST['start'] . " AS port\n";
+        for ( $port = $_POST['start'] + 1; $port < $_POST['end'] + 1; $port++ )
+          $query .= "UNION SELECT  " . $port . "\n";
+        $db->exec( $query );
       }
 
 
@@ -55,7 +60,10 @@
       <?php } ?>
       </table><br/>
       <form action="#" method="post">
-        <input type="text" name="port" /> <input type="submit" name="add" value="add port" />
+        <input type="text" name="port" value="1338" /> <input type="submit" name="add" value="add port" />
+      </form>
+      <form action="#" method="post">
+        <input type="text" name="start" value="1000" />-<input type="text" name="end" value="2000"/> <input type="submit" name="range" value="add ports" />
       </form>
     <?php  } else { ?>
       <form action="#" method="post">
