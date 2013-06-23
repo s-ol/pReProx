@@ -38,7 +38,7 @@
       if ( $port == null )
         die( "Sorry, no free ports. Please try again later." );
  
-      system( "./newredir " . $port->port . " " . $_POST['IP'] . " " . $_POST['port'] . " " . EXPIRE_TIME . " &" );
+      exec( "./newredir " . $port->port . " " . $_POST['IP'] . " " . $_POST['port'] . " " . EXPIRE_TIME . " >> log &" );
       $db->exec( "UPDATE ports SET t_port = " . $_POST['port'] . ", t_ip = '" . $_POST['IP'] . "', expires=DATETIME(CURRENT_TIMESTAMP, '" . EXPIRE_TIME . " seconds') WHERE port = " . $port->port );
  
       echo( "Yay, you are now reachable at " . HOST . ":" . $port->port . "!" );
