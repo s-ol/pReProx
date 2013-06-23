@@ -1,0 +1,52 @@
+body {
+	margin-left: 200px;
+	margin-bottom: 75px;
+	background: #122;
+	color: #aab;
+
+	font-family: Arial;
+}
+
+form {
+	width: 400px;
+	text-align: right;
+}
+
+a {
+	color: #fff;
+	text-decoration: none;
+}
+
+footer {
+	position: fixed;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	padding: 10px 200px;
+	background: #122;
+	border-top: 2px solid #233;
+	text-align: right;
+}
+
+#left {
+	float: left;
+}
+
+input {
+	background: #122;
+	border: 2px solid #233;
+	color: #aab;
+}
+
+input[type="submit"] {
+	width: 65px;
+}
+
+input[type="submit"]:active {
+	border: 2px solid #122;
+	background: #122!important;
+}
+
+input[type="submit"]:hover {
+	background: #233;
+}
