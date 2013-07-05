@@ -4,7 +4,7 @@
   $loggedin = false;
 
   if ( isset( $_POST['login'] ) && $_POST['username'] == USERNAME && $_POST['password'] == PASSWORD ) {
-    $_SESSION['token'] = sha1( USERNAME . "megasecr3t" );
+    $_SESSION['token'] = sha1( USERNAME . SECRET );
     $loggedin = true;
   } elseif ( isset( $_SESSION['token'] ) && $_SESSION['token'] == sha1( USERNAME . SECRET ) ) {
     $loggedin = true;
