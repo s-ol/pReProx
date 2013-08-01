@@ -53,7 +53,7 @@
       <tr><th>port</th><th>runs?</th><th>actions</th><th>target</th></tr>
       <?php
       while( ( $port = $stmt->fetch(PDO::FETCH_OBJ) ) != null ) { ?>
-        <tr><td><?php echo $port->port ?></td><td><?php echo $port->running ?></td><td><a href="?delete=<?php echo $port->port ?>">delete</a></td><td><?php echo $port->target ?></td></tr>
+        <tr><td><?php echo $port->port ?></td><td><?php echo $port->running ?></td><td><a href="?delete=<?php echo $port->port ?>" class="button">delete</a></td><td><?php echo $port->target ?></td></tr>
       <?php } ?>
       </table><br/>
       <form action="#" method="post">

@@ -32,21 +32,26 @@ footer {
 	float: left;
 }
 
-input {
+a.button {
+	font-size: 13px;
+	padding: 0 5px;
+}
+
+input, a.button {
 	background: #122;
 	border: 2px solid #233;
 	color: #aab;
 }
 
-input[type="submit"] {
+input[type="submit"], a.button {
 	width: 65px;
 }
 
-input[type="submit"]:active {
+input[type="submit"]:active, a.button:active {
 	border: 2px solid #122;
 	background: #122!important;
 }
 
-input[type="submit"]:hover {
+input[type="submit"]:hover, a.button:hover {
 	background: #233;
 }
